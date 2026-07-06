@@ -26,8 +26,6 @@
     "graphql-request": "^7.4.0"
   },
   "allowScripts": {
-    "github:npm-dz-ssbm/sys#f1c0924dedf34b1e63ff7f1b91a69d2038ce1a0b": true,
-    "github:npm-dz-ssbm/util#61035661bb4d6314bfa9f2826ae02a38803fc791": true,
     "esbuild@0.28.1": true
   }
 }
