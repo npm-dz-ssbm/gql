@@ -1,0 +1,33 @@
+{
+  "name": "@dz-ssbm/gql",
+  "version": "0.0.7",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "tsx --test"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "husky": "^9.1.7",
+    "tsx": "^4.23.0",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@dz-ssbm/sys": "github:npm-dz-ssbm/sys",
+    "@dz-ssbm/util": "github:npm-dz-ssbm/util",
+    "graphql-request": "^7.4.0"
+  },
+  "allowScripts": {
+    "github:npm-dz-ssbm/sys#f1c0924dedf34b1e63ff7f1b91a69d2038ce1a0b": true,
+    "github:npm-dz-ssbm/util#61035661bb4d6314bfa9f2826ae02a38803fc791": true,
+    "esbuild@0.28.1": true
+  }
+}
