@@ -53,9 +53,11 @@ function* operateUnknown(
   const networkControl = fullOpts.networkControl || "use-cache";
   const grClient = new GraphQLClient(
     apiUrl,
-    !client.authToken ? {} : {
-      headers: { authorization: `Bearer ${client.authToken}` },
-    },
+    !client.authToken
+      ? {}
+      : {
+          headers: { authorization: `Bearer ${client.authToken}` },
+        },
   );
   const keys = Object.keys(vars || {});
   keys.sort();
@@ -87,8 +89,8 @@ function* operateUnknown(
     }
     return yield* $.xTry(
       function* () {
-        const cachedText = yield* $.xWait(() =>
-          fs.tryReadTextFile(getQpathCached(), "")
+        const cachedText = yield* $.xAwait(() =>
+          fs.tryReadTextFile(getQpathCached(), ""),
         );
         const res = JSON.parse(cachedText);
         return [res[0], res[1]] as [ResType, string];
@@ -115,15 +117,15 @@ function* operateUnknown(
   const fline = (query.trim().split("\n")[0] || "").trim();
   log("sgg:graphql", `![${fline}]`, `![${JSON.stringify(vars)}]`);
 
-  yield* $.xWait(() => $.timeout(6 * 1000));
+  yield* $.xAwait(() => $.timeout(6 * 1000));
 
-  const res = yield* $.xWait(
+  const res = yield* $.xAwait(
     () =>
       grClient.request({ document: q, ...(vars ? { variables: vars } : {}) }),
     (e) => $.Err(Error.NetworkError(e)),
   );
 
-  yield* $.xWait(
+  yield* $.xAwait(
     () => fs.writeFilep(getQpathCached(), JSON.stringify([res, qkeyStr])),
     (e) => $.Err(Error.CacheWriteError(e)),
   );

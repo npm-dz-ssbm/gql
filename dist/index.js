@@ -26,9 +26,11 @@ function* operateUnknown(client, query, vars = {}, opts = {}) {
     const { url: apiUrl } = client;
     const log = fullOpts.log || (() => { });
     const networkControl = fullOpts.networkControl || "use-cache";
-    const grClient = new GraphQLClient(apiUrl, !client.authToken ? {} : {
-        headers: { authorization: `Bearer ${client.authToken}` },
-    });
+    const grClient = new GraphQLClient(apiUrl, !client.authToken
+        ? {}
+        : {
+            headers: { authorization: `Bearer ${client.authToken}` },
+        });
     const keys = Object.keys(vars || {});
     keys.sort();
     if (keys.length === 2 && keys[0] === "page" && keys[1] === "phaseGroupId") {
@@ -55,7 +57,7 @@ function* operateUnknown(client, query, vars = {}, opts = {}) {
             return undefined;
         }
         return yield* $.xTry(function* () {
-            const cachedText = yield* $.xWait(() => fs.tryReadTextFile(getQpathCached(), ""));
+            const cachedText = yield* $.xAwait(() => fs.tryReadTextFile(getQpathCached(), ""));
             const res = JSON.parse(cachedText);
             return [res[0], res[1]];
         }, () => $.Ok(undefined));
@@ -77,9 +79,9 @@ function* operateUnknown(client, query, vars = {}, opts = {}) {
     const q = gql(query.split("\n"));
     const fline = (query.trim().split("\n")[0] || "").trim();
     log("sgg:graphql", `![${fline}]`, `![${JSON.stringify(vars)}]`);
-    yield* $.xWait(() => $.timeout(6 * 1000));
-    const res = yield* $.xWait(() => grClient.request({ document: q, ...(vars ? { variables: vars } : {}) }), (e) => $.Err(Error.NetworkError(e)));
-    yield* $.xWait(() => fs.writeFilep(getQpathCached(), JSON.stringify([res, qkeyStr])), (e) => $.Err(Error.CacheWriteError(e)));
+    yield* $.xAwait(() => $.timeout(6 * 1000));
+    const res = yield* $.xAwait(() => grClient.request({ document: q, ...(vars ? { variables: vars } : {}) }), (e) => $.Err(Error.NetworkError(e)));
+    yield* $.xAwait(() => fs.writeFilep(getQpathCached(), JSON.stringify([res, qkeyStr])), (e) => $.Err(Error.CacheWriteError(e)));
     return res;
 }
 export * from "./T.js";
