@@ -12,9 +12,9 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
-    "./T": {
-      "import": "./dist/T.js",
-      "types": "./dist/T.d.ts"
+    "./node": {
+      "import": "./dist/node-index.js",
+      "types": "./dist/node-index.d.ts"
     }
   },
   "files": [
@@ -22,11 +22,11 @@
   ],
   "scripts": {
     "build": "tsc",
+    "prepare": "npm run build",
     "test": "tsx --test"
   },
   "devDependencies": {
     "@types/node": "^26.1.0",
-    "husky": "^9.1.7",
     "tsx": "^4.23.0",
     "typescript": "^6.0.3"
   },
